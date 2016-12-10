@@ -1,9 +1,15 @@
 #!/usr/bin/env python
+
+import matplotlib
+#matplotlib.use('TkAgg')
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import matplotlib.animation as animation
 import time
+
+
 
 class SubplotAnimation(animation.TimedAnimation):
     def __init__(self):
@@ -16,6 +22,7 @@ class SubplotAnimation(animation.TimedAnimation):
         self.z = np.asarray([])
         
         self.fig = plt.figure()
+
         self.ax1 = self.fig.add_subplot(1, 2, 1)
         self.ax2 = self.fig.add_subplot(3, 2, 2)
         self.ax3 = self.fig.add_subplot(3, 2, 4)
@@ -74,6 +81,8 @@ class SubplotAnimation(animation.TimedAnimation):
             self.ax4.add_line(self.line4_Trace)
             self.ax4.add_line(self.line4_NowMarker)
 
+
+        
     def draw_frame(self, ary):
         self.t = np.append(self.t, ary[0])
         self.x = np.append(self.x, ary[1])
@@ -97,6 +106,7 @@ class SubplotAnimation(animation.TimedAnimation):
         head_slice = (self.t > time_past) & (self.t < time_now+Dt/2)
         #print head_slice, ", ", self.t, ", ", time_past, ", ", time_now
         #print "x ", self.x[head_slice], ", y ", self.y[head_slice]
+        print ary
         
         self.line1_History.set_data(self.x[:i], self.y[:i])
         self.line2_History.set_data(self.t[i_past:i], self.x[i_past:i])
@@ -128,12 +138,15 @@ class SubplotAnimation(animation.TimedAnimation):
         #self.fig.canvas.draw()
         #self.fig.canvas.start_event_loop(0.00001)
         #plt.show(block=False)
-        #time.sleep(0.00001)
         #self.fig.canvas.draw_idle()
         #self.fig.canvas.flush_events()
-        plt.pause(0.00001)
         
-    
+        plt.pause(0.001)
+        #plt.draw()
+        #self.fig.canvas.flush_events()
+        
+
+        
     def new_frame_seq(self):
         self.ax2.set_xlim(0, self.Dt_max+1)
         self.ax3.set_xlim(0, self.Dt_max+1)
@@ -159,4 +172,7 @@ class SubplotAnimation(animation.TimedAnimation):
 if __name__ == '__main__':
     ani = SubplotAnimation()
     #ani.save(filename='sim.mp4',fps=30,dpi=300)
-    plt.show()
+    #plt.show()
+    for i in range(1,1000):
+        msg = [i/2.0, i/2.0+0.25, i/2.0+0.5, i/2.0+0.75]
+        ani.draw_frame( msg )

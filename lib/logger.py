@@ -13,7 +13,7 @@ class Logger(object):
             'timeout_sec'     : 1,
             'sampling_time_ms': 5,
             'plotting_time_ms': 100,
-            'n_data_sim'      : 1000,
+            'n_data_sim'      : 4000,
             'verbose'         : False,
         }
         self.dict.update(din)
